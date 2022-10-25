@@ -1,8 +1,9 @@
 from torch import autocast
-from flask import request,jsonify,Flask
+from flask import request,jsonify,Flask,send_file
 from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler
 
 app = Flask(__name__)
+
 
 lms = LMSDiscreteScheduler(
             beta_start=0.00085, 
@@ -26,7 +27,7 @@ def diffuse():
     prompt = prompt.replace(' ','_')
     fname = "images/%s.png"%(prompt) 
     image.save(fname)
-    return(jsonify({'status':'ok'}))
+    return send_file(fname, mimetype='image/png')
 
 
 
